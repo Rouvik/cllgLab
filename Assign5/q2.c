@@ -7,14 +7,14 @@ int main()
 	scanf("%d", &n);
 
 	int a = 1, b = 1, c = 0, prev = 4;
-	for(int i = 0; i < n; i++)
+	for(int i = 0; i < n;)
 	{
 		c = a + b;
 		a = b;
 		b = c;
 
 		
-		for(int j = prev; j < c; j++)
+		for(int j = prev; j < c && i < n; j++, i++)
 		{
 			printf("%d ", j);
 		}

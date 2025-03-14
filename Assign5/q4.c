@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 #include <stdbool.h>
 
 int main()
@@ -10,7 +11,7 @@ int main()
 	for(int i = 2; i <= n; i++)
 	{
 		bool notPrime = false;
-		for(int j = 2; j < sqrt(i); j++)
+		for(int j = 2; j <= sqrt(i); j++)
 		{
 			if(i % j == 0)
 			{
@@ -18,3 +19,14 @@ int main()
 				break;
 			}
 		}
+
+		if (notPrime)
+		{
+			continue;
+		}
+
+		printf("%d ", i);
+	}
+
+	return 0;
+}
