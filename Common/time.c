@@ -1,15 +1,20 @@
 #include <stdio.h>
 #include <time.h>
- 
+#include <string.h>
+#include <unistd.h>
+
 int main()
 {
 	time_t tm;
 	struct tm *lcltime;
-	while(1)
+	while (1)
 	{
 		time(&tm);
 		lcltime = localtime(&tm);
-		printf("\f\r%s          ", asctime(lcltime));
+		char *str = asctime(lcltime);
+		str[strlen(str) - 1] = '\0';
+		printf("\r%s", str);
+		sleep(1);
 	}
 	return 0;
 }
