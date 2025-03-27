@@ -14,6 +14,7 @@ int main()
 		char *str = asctime(lcltime);
 		str[strlen(str) - 1] = '\0';
 		printf("\r%s", str);
+		fflush(stdout);
 		sleep(1);
 	}
 	return 0;
