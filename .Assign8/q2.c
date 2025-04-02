@@ -1,22 +1,40 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-char toupper(char ch)
+int toupper(int c)
 {
-	if(ch >= 'a' && ch <= 'z')
-	{
-		return ch - 32;
-	}
+    if (c >= 'a' && c <= 'z')
+        return c - 32;
+    return c;
 }
 
-char tolower(char ch)
+int tolower(int c)
 {
-	if(ch >= 'A' && ch <= 'Z')
-	{
-		return ch + 32;
-	}
+    if (c >= 'A' && c <= 'Z')
+        return c + 32;
+    return c;
 }
+
 int main()
 {
-	
-	return 0;
+    char str[64];
+    printf("Enter a string: ");
+    fgets(str, sizeof(str), stdin);
+
+    for (int i = 0; str[i] != '\0'; i++)
+    {
+        str[i] = toupper(str[i]);
+    }
+    
+    printf("Capitalised: %s\n", str);
+
+    for (int i = 0; str[i] != '\0'; i++)
+    {
+        str[i] = tolower(str[i]);
+    }
+
+    printf("Smallised: %s\n", str);
+
+    return 0;
 }
