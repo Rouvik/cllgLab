@@ -11,7 +11,7 @@ FLAGS := -Wall -Wextra
 all: mkdirs $(OUTPUTS)
 
 $(BUILD)/%: %.c
-	$(CC) $^ -o $@ $(FLAGS) $(DEBUG)
+	$(CC) $^ -o $@ $(FLAGS) $(DEBUG) $(OPT)
 
 mkdirs:
 	mkdir -p $(BUILD)
