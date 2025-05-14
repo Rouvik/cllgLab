@@ -21,8 +21,6 @@ void writeStudents()
         exit(1);
     }
 
-    fwrite(&n, sizeof(int), 1, db);
-
     Student_t students[n];
     for (int i = 0; i < n; i++)
     {
@@ -59,23 +57,19 @@ void readStudent(int roll)
         exit(1);
     }
 
-    int n;
-    fread(&n, sizeof(int), 1, db);
+    Student_t student;
 
-    Student_t students[n];
-    fread(students, sizeof(Student_t), n, db);
-    fclose(db);
-
-    for (int i = 0; i < n; i++)
+    while (!feof(db))
     {
-        if (students[i].roll == roll)
+        fread(&student, sizeof(Student_t), 1, db);
+        if (student.roll == roll)
         {
-            printf("Name: %s\nAddress: %s\nMarks: %d\n", students[i].name, students[i].address, students[i].marks);
-
+            printf("Name: %s\nAddress: %s\nMarks: %d\n", student.name, student.address, student.marks);
             return;
         }
     }
-
+    
+    fclose(db);
     printf("Student record not found...");
 }
 
