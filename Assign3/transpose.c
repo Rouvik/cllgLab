@@ -2,7 +2,22 @@
 
 #include "mat.h"
 
-tbvyh
+void transposeMat(int *src, int *dest)
+{
+	if (src[0] != dest[0] || src[1] != dest[1])
+	{
+		printf("Error cannot transpose matrix, destination dimentions mismatch: %d x %d vs %d vs %d\n", src[0], src[1], dest[0], dest[1]);
+		return;
+	}
+	
+	for (int i = 0; i < src[0]; i++)
+	{
+		for (int j = 0; j < src[1]; j++)
+		{
+			INDEX(dest, j, i) = INDEX(src, i, j);
+		}
+	}
+}
 
 int main(int argc, const char *argv[])
 {
@@ -13,18 +28,16 @@ int main(int argc, const char *argv[])
 	int m1[y * x + 2];
 	m1[0] = y;
 	m1[1] = x;
+	inputMat(m1);
 
 	int m2[y * x + 2];
-	m2[0] = y;
-	m2[1] = x;
+	m2[0] = x;
+	m2[1] = y;
 
-	inputMat(m1);
-	inputMat(m2);
+	transposeMat(m1, m2);
 
-	addMat(m1, m2);
-
-	puts("Sum:");
-	printMat(m1);
+	puts("Transpose:");
+	printMat(m2);
 
 	return 0;
 }
