@@ -85,20 +85,72 @@ void Node_print(Node_t *root)
 		ptr = ptr->next;
 	}
 
-	printf("]");
+	printf("]\n");
 }
 
 int main()
 {
 	Node_t *root = NULL;
-	for(int i = 0; i < 10; i++)
+
+	int running = 1;
+	while(running)
 	{
-		int x;
-		scanf("%d", &x);
-		Node_insertFirst(&root, x);
+		printf("1) Insert Last\n2) Insert first\n3) Insert Any\n4) Print\n5) Quit\n> ");
+		int ch;
+		scanf("%d", &ch);
+
+		switch(ch)
+		{
+			case 1:
+			{
+				printf("Enter element to insert: ");
+				int x;
+				scanf("%d", &x);
+				Node_insertFirst(&root, x);
+				printf("Output: ");
+				Node_print(root);
+			}
+			break;
+
+			case 2:
+			{
+				printf("Enter element to insert: ");
+				int x;
+				scanf("%d", &x);
+				Node_insertLast(&root, x);
+				printf("Output: ");
+				Node_print(root);
+			}
+			break;
+
+			case 3:
+			{
+				printf("Enter element to insert and its index: ");
+				int x, i;
+				scanf("%d %d", &x, &i);
+				Node_insertAfter(&root, x, i);
+				printf("Output: ");
+				Node_print(root);
+			}
+			break;
+
+			case 4:
+			{
+				printf("Output: ");
+				Node_print(root);
+			}
+			break;
+
+			case 5:
+			running = 0;
+			break;
+
+			default:
+			printf("Unknown operation...\n");
+		}
 	}
 
-	Node_print(root);
 	Node_free(root);
+
 	return 0;
 }
