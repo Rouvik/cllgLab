@@ -41,7 +41,38 @@ void Node_insertFirst(Node_t **root, int value)
 
 void Node_insertLast(Node_t **root, int value)
 {
-	
+	if(!*root)
+	{
+		*root = Node_init(value);
+		return;
+	}
+
+	Node_t *ptr = *root;
+	while(ptr->next)
+	{
+		ptr = ptr->next;
+	}
+
+	ptr->next = Node_init(value);
+}
+
+void Node_insertAfter(Node_t **root, int value, int index)
+{
+	if(!*root)
+	{
+		*root = Node_init(value);
+		return;
+	}
+
+	Node_t *ptr = *root;
+	while(ptr->next != NULL && index != 0)
+	{
+		ptr = ptr->next;
+	}
+
+	Node_t *temp = Node_init(value);
+	temp->next = ptr->next;
+	ptr->next = temp;
 }
 
 void Node_print(Node_t *root)
@@ -62,7 +93,9 @@ int main()
 	Node_t *root = NULL;
 	for(int i = 0; i < 10; i++)
 	{
-		Node_insertFirst(&root, i);
+		int x;
+		scanf("%d", &x);
+		Node_insertFirst(&root, x);
 	}
 
 	Node_print(root);
