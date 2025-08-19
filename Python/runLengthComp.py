@@ -14,4 +14,4 @@ while i < len(inp):
 		ch = inp[i]
 	i += 1
 
-print() # Waste a new line to make it terminal friendly
+print(ch, count, sep='') # Waste a new line to make it terminal friendly
