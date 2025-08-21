@@ -65,7 +65,7 @@ void Node_insertAfter(Node_t **root, int value, int index)
 	}
 
 	Node_t *ptr = *root;
-	while(ptr->next != NULL && index != 0)
+	while(ptr->next != NULL && index-- != 0)
 	{
 		ptr = ptr->next;
 	}
@@ -106,7 +106,7 @@ int main()
 				printf("Enter element to insert: ");
 				int x;
 				scanf("%d", &x);
-				Node_insertFirst(&root, x);
+				Node_insertLast(&root, x);
 				printf("Output: ");
 				Node_print(root);
 			}
@@ -117,7 +117,7 @@ int main()
 				printf("Enter element to insert: ");
 				int x;
 				scanf("%d", &x);
-				Node_insertLast(&root, x);
+				Node_insertFirst(&root, x);
 				printf("Output: ");
 				Node_print(root);
 			}
