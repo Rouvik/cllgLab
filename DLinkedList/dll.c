@@ -143,15 +143,15 @@ int Node_delete(Node_t **root, int index)
 }
 
 // wrapper call to Node_delete(root, 0)
-void Node_deleteFirst(Node_t **root)
+int Node_deleteFirst(Node_t **root)
 {
-	Node_delete(root, 0);
+	return Node_delete(root, 0);
 }
 
 // wrapper call to Node_delete(root, INT_MAX)
-void Node_deleteLast(Node_t **root)
+int Node_deleteLast(Node_t **root)
 {
-	Node_delete(root, INT_MAX);
+	return Node_delete(root, INT_MAX);
 }
 
 // print the contents of the list

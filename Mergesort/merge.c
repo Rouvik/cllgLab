@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <string.h>
 
 void merge(int *arr1, int l1, int *arr2, int l2, int *dest)
 {
