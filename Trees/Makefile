@@ -6,7 +6,7 @@ BUILD := ./bin
 TARGETS := $(wildcard *.c)
 OUTPUTS := $(patsubst %.c, $(BUILD)/%, $(TARGETS))
 
-FLAGS := -Wall -ggdb
+FLAGS := -Wall
 
 all: mkdirs $(OUTPUTS)
 

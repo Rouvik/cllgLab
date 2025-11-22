@@ -4,7 +4,7 @@
 
 void printArr(int *arr, int length)
 {
-	for(int i = 0; i < length; i++)
+	for (int i = 0; i < length; i++)
 	{
 		printf("%d ", arr[i]);
 	}
@@ -12,54 +12,59 @@ void printArr(int *arr, int length)
 	putchar('\n');
 }
 
-int partition(int *arr, int length)
+void swap(int *a, int *b)
 {
-	if(length < 2) return 0;
-
-	printf("DBG partition %d %d\n", arr[0], length);
-
-	int i = 1, j = length - 1;
-	for(; i <= j;)
-	{
-		for(; arr[i] < arr[0] && i <= j; i++);
-		for(; arr[j] > arr[0] && i <= j; j--);
-
-		int t = arr[i];
-		arr[i] = arr[j];
-		arr[j] = t;
-	}
-
-	int t = arr[j];
-	arr[j] = arr[0];
-	arr[0] = t;
-
-	printArr(arr, length);
-
-	return j;
+	int t = *a;
+	*a = *b;
+	*b = t;
 }
 
-void qsort(int *arr, int length)
+int partition(int *arr, int low, int high)
 {
-	printf("DBG qsort\n");
+	int pivot = arr[(low + high) / 2];
+	int i = low - 1, j = high + 1;
 
-	if(length == 1) return;
+	while (1)
+	{
+		do
+		{
+			i++;
+		} while (arr[i] < pivot);
 
-	int pind = partition(arr, length);
+		do
+		{
+			j--;
+		} while (arr[j] > pivot);
 
-	qsort(arr, pind);
-	qsort(arr + pind, length - pind);
+		if (i >= j)
+			return j;
+
+		swap(&arr[i], &arr[j]);
+	}
+}
+
+void qsort(int *arr, int low, int high)
+{
+	if (low < high)
+	{
+		int pind = partition(arr, low, high);
+
+		qsort(arr, low, pind);
+		qsort(arr, pind + 1, high);
+	}
 }
 
 int main()
 {
-	int arr[] = {1, 3, 2};
+	int arr[] = {1, 3, 5, 7, 9, 2, 4, 6, 8, 0};
 
-	qsort(arr, ARRSIZE(arr));
-
-	for(int i = 0; i < ARRSIZE(arr); i++)
-	{
-		printf("%d ", arr[i]);
-	}
+	printf("Before sorting: ");
+	printArr(arr, ARRSIZE(arr));
+	
+	qsort(arr, 0, ARRSIZE(arr) - 1);
+	
+	printf("After sorting: ");
+	printArr(arr, ARRSIZE(arr));
 
 	return 0;
 }
