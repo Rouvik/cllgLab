@@ -3,3 +3,6 @@ bin/
 
 # Ignore the vscode stuff
 .vscode/
+
+# Ignore any python crap
+__pycache__
