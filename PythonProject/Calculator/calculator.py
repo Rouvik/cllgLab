@@ -71,7 +71,7 @@ buttonMap["X"].config(command=delMath)
 buttonMap["="].config(command=calculate)
 
 # Key binds
-root.bind("<BackSpace>", lambda e: delMath())
+# root.bind("<BackSpace>", lambda e: delMath())
 root.bind("<Return>", lambda e: calculate())
 
 root.mainloop()

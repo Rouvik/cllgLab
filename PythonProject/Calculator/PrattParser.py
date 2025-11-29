@@ -19,7 +19,7 @@ class Lexer:
             ch = self.text[self.cur]
             self.cur += 1
 
-            if re.match("[+|\\-|*|\\/|\\(|\\)]", ch):
+            if re.match("[+\\-*/()]", ch):
                 if len(token) == 0:
                     return (ch, Tokens.op)
                 else:
