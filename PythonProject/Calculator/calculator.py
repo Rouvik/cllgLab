@@ -1,5 +1,6 @@
 import tkinter as tk
 import ttkbootstrap as ttk
+import re
 from tkinter import messagebox
 from PrattParser import PrattParser, Lexer
 
@@ -8,6 +9,8 @@ parser = PrattParser()
 style = ttk.Style("darkly")
 style.configure(".", font=("Helvetica", 16))
 root = style.master
+
+root.title("Rouvik\'s Calculator")
 
 toolbar_menu = ttk.Menu(master=root)
 themeMenu = ttk.Menu(master=toolbar_menu)
@@ -66,12 +69,27 @@ def calculate():
     except Exception as e:
         messagebox.showerror(message="Error failed to evaluate expression", detail=str(e))
 
+def dotHandler():
+    x = mathText.get()
+    for i in range(len(x) - 1, -1, -1):
+        if re.match("[+\\-*/() ]", x[i]):
+            break
+        elif x[i] == '.':
+            return
+    mathText.insert(tk.END, '.')
+
 buttonMap["C"].config(command=clearMath)
 buttonMap["X"].config(command=delMath)
 buttonMap["="].config(command=calculate)
+buttonMap["."].config(command=dotHandler)
+
+def mathTextDotKey(e):
+    dotHandler()
+    return "break"
 
 # Key binds
 # root.bind("<BackSpace>", lambda e: delMath())
 root.bind("<Return>", lambda e: calculate())
+mathText.bind("<Key-.>", mathTextDotKey)
 
 root.mainloop()
