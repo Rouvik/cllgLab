@@ -3,11 +3,13 @@ CC := gcc
 
 BUILD := ./bin
 
+INCLUDE_DIR := ./include
+
 TARGETS := $(wildcard *.c)
 OUTPUTS := $(patsubst %.c, $(BUILD)/%, $(TARGETS))
 
 DEBUG = -ggdb
-FLAGS := -Wall -lm
+FLAGS := -Wall -Wextra -Wpedantic -I$(INCLUDE_DIR)
 
 all: mkdirs $(OUTPUTS)
 

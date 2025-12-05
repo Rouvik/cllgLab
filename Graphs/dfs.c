@@ -6,7 +6,7 @@
 
 int *Graph_init(int maxRadius)
 {
-	int *mat = (int *)malloc(maxRadius * maxRadius * sizeof(int));
+	int *mat = (int *)malloc(maxRadius * maxRadius * sizeof(int) + 1);
 	mat[0] = maxRadius;
 	return mat;
 }
@@ -60,45 +60,45 @@ void Graph_print(int *adj)
 	}
 }
 
-bool Graph_cycleDetect(int *adj, int p, int v, int *visited)
+void Graph_dfs(int *adj, int v, int *visited)
 {
 	// make sure not to start with non existent vertices
 	if (v > adj[0])
 	{
 		printf("Error, vertex greater than maxRadius\n");
-		return false;
+		exit(1);
 	}
 
+	if(visited[v]) return;	// visited so ignore
+
 	visited[v] = true; // mark as visited, on call
+	printf("Visited: %d\n", v);
 
 	for (int i = 0; i < adj[0]; i++)
 	{
-		if (i == v || i == p)
-			continue; // dont try to visit self or consider its previous
+		if (i == v)
+			continue; // dont try to visit self
 
-		if (INDEX_ADJ(adj, v, i)) // go through neighbours and visit, if visited -> CYCLE :)
+		if (INDEX_ADJ(adj, v, i)) // go through neighbours and visit
 		{
-			if (visited[i] || Graph_cycleDetect(adj, v, i, visited))
-				return true;
+			Graph_dfs(adj, i, visited);
 		}
 	}
-
-	return false;
 }
 
 int main(int argc, const char *argv[])
 {
 	int *graph = Graph_init(5);
-	Graph_addEdge(graph, 0, 1, true);
-	Graph_addEdge(graph, 1, 2, true);
-	Graph_addEdge(graph, 2, 0, true);
+	Graph_addEdge(graph, 0, 1, false);
+	Graph_addEdge(graph, 1, 2, false);
+	Graph_addEdge(graph, 2, 0, false);
 
 	Graph_print(graph);
 	putchar('\n');
 
-	int visited[5];
+	int visited[5] = {0};
 
-	printf("Has cycles? %s\n", Graph_cycleDetect(graph, -1, 0, visited) ? "TRUE" : "FALSE");
+	Graph_dfs(graph, 0, visited);
 
 	Graph_free(&graph);
 
