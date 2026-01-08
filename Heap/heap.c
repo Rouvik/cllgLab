@@ -36,12 +36,6 @@ void Heap_free(Heap_t *hp)
 	free(hp->arr);
 }
 
-void Heap_insert(Heap_t *hp, int data)
-{
-	hp->arr[(hp->i)++] = data;
-	Heap_trickleUp(hp, hp->i);
-}
-
 void Heap_trickleUp(Heap_t *hp, int i)
 {
 	if(i == 0) return;
@@ -54,8 +48,59 @@ void Heap_trickleUp(Heap_t *hp, int i)
 	}
 }
 
+void Heap_insert(Heap_t *hp, int data)
+{
+	hp->arr[(hp->i)++] = data;
+	Heap_trickleUp(hp, hp->i - 1);
+}
+
+void Heap_trickleDown(Heap_t *hp, int i)
+{
+	int lci = Heap_lcindex(i);
+	
+	if (lci >= hp->i) return;
+	
+	int rci = Heap_rcindex(i);
+
+	int smaller_index = rci >= hp->i ? lci : (hp->arr[lci] <= hp->arr[rci] ? lci : rci);
+
+	if (hp->arr[i] > hp->arr[smaller_index])
+	{
+		swap(&(hp->arr[i]), &(hp->arr[smaller_index]));
+		Heap_trickleDown(hp, smaller_index);
+	}
+}
+
+int Heap_remove(Heap_t *hp)
+{
+	int x = hp->arr[0];
+	hp->arr[0] = hp->arr[--(hp->i)];
+	Heap_trickleDown(hp, 0);
+
+	return x;
+}
+
+#define ARRSIZE(arr) (sizeof(arr) / sizeof(arr[0]))
+
 int main(int argc, const char *argv[])
 {
+	int arr[] = {1, 6, 9, 0, 4, 5, 2, 8, 7, 3, 78, 23, 67, 90, 12};
+
+	Heap_t hp = Heap_init((ARRSIZE(arr) / 10 + 1) * 10);	// allocate aggressively in multiples of 10
+
+	for (int i = 0; i < ARRSIZE(arr); i++)
+	{
+		Heap_insert(&hp, arr[i]);
+	}
 	
+	puts("Sorted:");
+	for (int i = 0; i < ARRSIZE(arr); i++)
+	{
+		printf("%d ", Heap_remove(&hp));
+	}
+	putchar('\n');
+	
+	Heap_free(&hp);
+
 	return 0;
 }
