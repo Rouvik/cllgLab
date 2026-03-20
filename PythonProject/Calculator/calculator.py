@@ -10,7 +10,7 @@ style = ttk.Style("darkly")
 style.configure(".", font=("Helvetica", 16))
 root = style.master
 
-root.title("Rouvik\'s Calculator")
+root.title("Rouvik\'s Calculator") # type: ignore
 
 toolbar_menu = ttk.Menu(master=root)
 themeMenu = ttk.Menu(master=toolbar_menu)
@@ -90,6 +90,6 @@ def mathTextDotKey(e):
 # Key binds
 # root.bind("<BackSpace>", lambda e: delMath())
 root.bind("<Return>", lambda e: calculate())
-mathText.bind("<Key-.>", mathTextDotKey)
+mathText.bind("<Key-period>", mathTextDotKey)
 
 root.mainloop()

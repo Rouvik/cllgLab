@@ -1,0 +1,8 @@
+# Ignore any xlsx and env
+*.xlsx
+*.xls
+*.xlsm
+*.xltx
+*.xlsb
+
+env/
