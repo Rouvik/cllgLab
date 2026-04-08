@@ -19,7 +19,7 @@ void sort(int *arr, int length)
 	}
 }
 
-int bsearch(int *arr, int length, int target)
+int rbsearch(int *arr, int length, int target)
 {
 	sort(arr, length);
 	printf("After sort: ");
@@ -46,6 +46,11 @@ int bsearch(int *arr, int length, int target)
 	return ERROR_VAL;
 }
 
+void test()
+{
+	
+}
+
 int main()
 {
 	int n;
@@ -68,7 +73,7 @@ int main()
 
 	clock_t st = clock();
 
-	int index = bsearch(arr, n, tgt);
+	int index = rbsearch(arr, n, tgt);
 
 	clock_t end = clock();
 
