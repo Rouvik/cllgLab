@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <time.h>
 
-#include "helper.h"
+#include "rtbench.h"
 
 void sort(int *arr, int length)
 {
@@ -21,11 +21,6 @@ void sort(int *arr, int length)
 
 int rbsearch(int *arr, int length, int target)
 {
-	sort(arr, length);
-	printf("After sort: ");
-	printArr(arr, length);
-	putchar('\n');
-
 	int i = 0, j = length - 1;
 	while (i <= j)
 	{
@@ -43,50 +38,33 @@ int rbsearch(int *arr, int length, int target)
 		}
 	}
 
-	return ERROR_VAL;
-}
-
-void test()
-{
-	
+	return -999;
 }
 
 int main()
 {
-	int n;
-	printf("Enter size of array: ");
-	scanf("%d", &n);
-
-	int arr[n];
-
-	printf("Enter %d elements: ", n);
-	for (int i = 0; i < n; i++)
+	BENCH(10, 100000, n *= 10)
 	{
-		scanf("%d", arr + i);
+		int arr[n];
+		genRandArr(arr, n, 100);
+
+		int rand_elem = arr[rand() % n];
+
+		int index;
+
+		MEASURE_T(x)
+		{
+			sort(arr, n);
+			index = rbsearch(arr, n, rand_elem);
+		}
+			
+		if (arr[index] != rand_elem)
+		{
+			printf("Fatal error search mismatch: %d %d %d\n", index, arr[index], rand_elem);
+		}
+
+		PRINT_MEASURE(x);
 	}
-
-	int tgt;
-	printf("Enter an element to search: ");
-	while (getchar() != '\n')
-		;
-	scanf("%d", &tgt);
-
-	clock_t st = clock();
-
-	int index = rbsearch(arr, n, tgt);
-
-	clock_t end = clock();
-
-	if (index == ERROR_VAL)
-	{
-		printf("Failed to find %d\n", tgt);
-	}
-	else
-	{
-		printf("Found %d at %d\n", tgt, index);
-	}
-
-	printf("Time: %ld ticks\n", end - st);
 
 	return 0;
 }
