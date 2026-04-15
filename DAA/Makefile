@@ -6,14 +6,16 @@ BUILD := ./bin
 TARGETS := $(wildcard *.c)
 OUTPUTS := $(patsubst %.c, $(BUILD)/%, $(TARGETS))
 
-FLAGS := -Wall -lm
+FLAGS := -Wall -O0
 
-all: mkdirs $(OUTPUTS)
+all: $(OUTPUTS)
 
-$(BUILD)/%: %.c
+$(BUILD)/%: %.c | mkdirs
 	$(CC) $^ -o $@ $(FLAGS) $(DEBUG)
 
-mkdirs:
+mkdirs: $(BUILD)
+
+$(BUILD):
 	mkdir -p $(BUILD)
 
 clean:
