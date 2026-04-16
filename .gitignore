@@ -6,3 +6,6 @@ bin/
 
 # Ignore any python crap
 __pycache__
+
+# Verilog
+**/*.vcd
