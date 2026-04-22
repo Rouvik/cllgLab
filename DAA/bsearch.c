@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <time.h>
 
+#define RTBENCH_IMPLEMENTATION
 #include "rtbench.h"
 
 void sort(int *arr, int length)

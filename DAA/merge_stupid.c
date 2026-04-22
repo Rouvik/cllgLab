@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <sys/resource.h>
-
-#include "rtbench.h"
+#include <time.h>
+#include <stdlib.h>
 
 void merge(int *arr1, int l1, int *arr2, int l2, int *dest)
 {
@@ -46,6 +46,15 @@ void msort(int *arr, int length, int *dest)
 	msort(arr + mid, length - mid, d2);
 
 	merge(d1, mid, d2, length - mid, dest);
+}
+
+void genRandArr(int *arr, int n, int range)
+{
+	srand(time(NULL));
+	for (int i = 0; i < n; i++)
+	{
+		arr[i] = rand() % range;
+	}
 }
 
 int main(int argc, const char *argv[])

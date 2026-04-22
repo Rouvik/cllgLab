@@ -1,4 +1,6 @@
 #include <stdio.h>
+
+#define RTBENCH_IMPLEMENTATION
 #include "rtbench.h"
 
 #define ARRSIZE(arr) sizeof(arr) / sizeof(arr[0])

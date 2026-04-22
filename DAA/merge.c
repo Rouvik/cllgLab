@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <sys/resource.h>
 
+#define RTBENCH_IMPLEMENTATION
 #include "rtbench.h"
 
 void merge(int *arr1, int l1, int *arr2, int l2, int *dest)

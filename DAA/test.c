@@ -1,36 +1,39 @@
 #include <stdio.h>
 
-size_t stack_low = 0;
-size_t stack_high = 0;
-
-#define mstack_begin() 					\
-do { 							\
-	asm("mov %%rsp, %0" : "=r" (stack_high)); 	\
-	stack_low = stack_high; 			\
-} while(0);
-
-#define mstack_probe()				\
-do {						\
-	size_t x = 0;				\
-	asm("mov %%rsp, %0" : "=r" (x));	\
-	if(stack_low > x) stack_low = x;	\
-} while(0);
+#define RTBENCH_IMPLEMENTATION
+#include "rtbench.h"
 
 int fact(int n)
 {
-	volatile int x = 100;
-	mstack_probe();
 	return n == 1 ? 1 : n * fact(n - 1);
+}
+
+int factm(int n)
+{
+	BENCH_STACK_MSR();
+	return n == 1 ? 1 : n * factm(n - 1);
 }
 
 int main()
 {
-	mstack_begin();
-	int out = fact(5);
+	FILE *fp = fopen("./bench.csv", "w");
 
-	printf("%d\n", out);
+	BENCH(10, 10000, n += 50)
+	{
+		int volatile out;
+		MEASURE_T()
+		{
+			out = fact(n);
+		}
 
-	printf("%ld\n", stack_high - stack_low);
+		BENCH_STACK_PROBE();
+		out = factm(n);
+
+		// PRINT_MEASURE();
+		fprintf(fp, "%d,%f,%ld\n", n, (double)(measure_end_ - measure_st_) / CLOCKS_PER_SEC, BENCH_STACK_HIGH - BENCH_STACK_LOW);
+	}
+
+	fclose(fp);
 
 	return 0;
 }
