@@ -29,6 +29,8 @@ void merge(int *arr1, int l1, int *arr2, int l2, int *dest)
 	{
 		dest[k] = arr2[j];
 	}
+
+	BENCH_STACK_MSR();
 }
 
 void msort(int *arr, int length, int *dest)
@@ -51,21 +53,24 @@ void msort(int *arr, int length, int *dest)
 
 int main(int argc, const char *argv[])
 {
-	BENCH(10, 100000, n *= 10)
+	FILE *fp = fopen("./bench.csv", "w");
+
+	BENCH(10, 100000, n += 500)
 	{
 		int arr[n], dest[n];
 		genRandArr(arr, n, 100);
 
-		MEASURE_T()
+		MEASURE_T(100)
 		{
+			BENCH_STACK_PROBE();
 			msort(arr, n, dest);
 		}
 
-		struct rusage usage;
-		getrusage(RUSAGE_SELF, &usage);
-
-		printf("%d\t%d\t%ld\t%ld\n", i, n, measure_end_ - measure_st_, usage.ru_maxrss);
+		// PRINT_MEASURE();
+		fprintf(fp, "%d,%ld,%ld\n", n, measure_time_, BENCH_STACK_HIGH - BENCH_STACK_LOW);
 	}
+
+	fclose(fp);
 
 	return 0;
 }

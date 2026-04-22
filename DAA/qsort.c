@@ -17,6 +17,8 @@ int partition(int *arr, int low, int high)
 	int pivot = arr[(low + high) / 2];
 	int i = low - 1, j = high + 1;
 
+	BENCH_STACK_MSR();
+
 	while (1)
 	{
 		do
@@ -49,18 +51,24 @@ void rqsort(int *arr, int low, int high)
 
 int main()
 {
-	BENCH(10, 100000, n *= 10)
+	FILE *fp = fopen("./bench.csv", "w");
+
+	BENCH(10, 100000, n += 500)
 	{
 		int arr[n];
 		genRandArr(arr, n, 100);
 
-		MEASURE_T()
+		MEASURE_T(100)
 		{
+			BENCH_STACK_PROBE();
 			rqsort(arr, 0, n);
 		}
 
-		PRINT_MEASURE();
+		// PRINT_MEASURE();
+		fprintf(fp, "%d,%ld,%ld\n", n, measure_time_, BENCH_STACK_HIGH - BENCH_STACK_LOW);
 	}
+
+	fclose(fp);
 
 	return 0;
 }

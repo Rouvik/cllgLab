@@ -26,16 +26,16 @@ extern size_t BENCH_STACK_LOW, BENCH_STACK_HIGH;
 			BENCH_STACK_LOW = x;                 \
 	} while (0);
 
-#define BENCH_TIME_AVG_COUNT 1
+#define MEASURE_T(avg_count, ...)                                                                                                          \
+	clock_t measure_time_##__VA_ARGS__ = 0;                                                                                                \
+	for (clock_t total = 0, _avg_out_once = 1, _i = 0; _avg_out_once; measure_time_##__VA_ARGS__ = total / (avg_count), _avg_out_once = 0) \
+		for (; _i < (avg_count); _i++)                                                                                                     \
+			for (clock_t st = clock(), _once = 1; _once; total += clock() - st, _once = 0)
 
 #ifdef BENCH_OUT_TO_FILE
 #define BENCH(fname, start_size, end_size, incr)                                                                \
 	for (FILE *fp = fopen(fname, "w"); fp && (fputs("index\tn\tticks\tstack\n", fp), 1); fclose(fp), fp = NULL) \
 		for (int i = 1, n = start_size; n <= end_size; incr, i++)
-
-#define MEASURE_T(...)                                                     \
-	clock_t measure_st_##__VA_ARGS__ = clock(), measure_end_##__VA_ARGS__; \
-	for (int _once = 1; _once; measure_end_##__VA_ARGS__ = clock(), _once = 0)
 
 #define PRINT_MEASURE(...) \
 	fprintf(fp, "%d\t%d\t%ld\t%ld\n", i, n, measure_end_##__VA_ARGS__ - measure_st_##__VA_ARGS__, BENCH_STACK_HIGH - BENCH_STACK_LOW);
@@ -45,12 +45,8 @@ extern size_t BENCH_STACK_LOW, BENCH_STACK_HIGH;
 	printf("index\tn\tticks\tstack\n");   \
 	for (int i = 1, n = start_size; n <= end_size; incr, i++)
 
-#define MEASURE_T(...)                                                     \
-	clock_t measure_st_##__VA_ARGS__ = clock(), measure_end_##__VA_ARGS__; \
-	for (int _once = 1; _once; measure_end_##__VA_ARGS__ = clock(), _once = 0)
-
 #define PRINT_MEASURE(...) \
-	printf("%d\t%d\t%ld\t%ld\n", i, n, measure_end_##__VA_ARGS__ - measure_st_##__VA_ARGS__, BENCH_STACK_HIGH - BENCH_STACK_LOW);
+	printf("%d\t%d\t%ld\t%ld\n", i, n, measure_time_##__VA_ARGS__, BENCH_STACK_HIGH - BENCH_STACK_LOW);
 #endif
 
 #ifdef RTBENCH_IMPLEMENTATION

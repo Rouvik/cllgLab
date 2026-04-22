@@ -16,12 +16,10 @@ int factm(int n)
 
 int main()
 {
-	FILE *fp = fopen("./bench.csv", "w");
-
-	BENCH(10, 10000, n += 50)
+	BENCH(10, 10000, n *= 10)
 	{
 		int volatile out;
-		MEASURE_T()
+		MEASURE_T(20)
 		{
 			out = fact(n);
 		}
@@ -29,11 +27,8 @@ int main()
 		BENCH_STACK_PROBE();
 		out = factm(n);
 
-		// PRINT_MEASURE();
-		fprintf(fp, "%d,%f,%ld\n", n, (double)(measure_end_ - measure_st_) / CLOCKS_PER_SEC, BENCH_STACK_HIGH - BENCH_STACK_LOW);
+		PRINT_MEASURE();
 	}
-
-	fclose(fp);
 
 	return 0;
 }
