@@ -1,4 +1,4 @@
-`include "xor.v"
+`include "a1/xor.v"
 
 module xor_tb();
 

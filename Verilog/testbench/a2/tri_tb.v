@@ -1,4 +1,4 @@
-`include "tri.v"
+`include "a2/tri.v"
 
 module tri_tb();
 	reg d, en;

@@ -1,4 +1,4 @@
-`include "twocompxor.v"
+`include "a3/twocompxor.v"
 
 module twocompxor_tb();
 	reg [3:0] A;

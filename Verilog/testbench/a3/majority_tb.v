@@ -1,4 +1,4 @@
-`include "majority.v"
+`include "a3/majority.v"
 
 module majority_tb();
 	reg [2:0] A;

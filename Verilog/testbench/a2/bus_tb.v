@@ -1,4 +1,4 @@
-`include "bus.v"
+`include "a2/bus.v"
 
 module bus_tb();
 	reg [3:0] I;
