@@ -7,10 +7,13 @@
 
 void printArr(int *arr, int length);
 void genRandArr(int *arr, int length, int range);
+void *bmalloc(size_t size);
+void bfree(void *ptr);
 
 extern size_t BENCH_STACK_LOW, BENCH_STACK_HIGH;
+extern size_t BENCH_HEAP_TOTAL, BENCH_HEAP_CURRENT;
 
-#define BENCH_STACK_PROBE()                                     \
+#define BENCH_STACK_RST()                                       \
 	do                                                          \
 	{                                                           \
 		asm volatile("mov %%rsp, %0" : "=r"(BENCH_STACK_HIGH)); \
@@ -26,6 +29,15 @@ extern size_t BENCH_STACK_LOW, BENCH_STACK_HIGH;
 			BENCH_STACK_LOW = x;                 \
 	} while (0);
 
+#define BENCH_HEAP_RST()        \
+	do                          \
+	{                           \
+		BENCH_HEAP_TOTAL = 0;   \
+		BENCH_HEAP_CURRENT = 0; \
+	} while (0);
+
+#define IS_HEAP_LEAKY (BENCH_HEAP_CURRENT != 0)
+
 #define MEASURE_T(avg_count, ...)                                                                                                          \
 	clock_t measure_time_##__VA_ARGS__ = 0;                                                                                                \
 	for (clock_t total = 0, _avg_out_once = 1, _i = 0; _avg_out_once; measure_time_##__VA_ARGS__ = total / (avg_count), _avg_out_once = 0) \
@@ -34,21 +46,22 @@ extern size_t BENCH_STACK_LOW, BENCH_STACK_HIGH;
 
 #ifdef BENCH_OUT_TO_FILE
 #define BENCH(fname, start_size, end_size, incr)                                                                \
-	for (FILE *fp = fopen(fname, "w"); fp && (fputs("index\tn\tticks\tstack\n", fp), 1); fclose(fp), fp = NULL) \
+	for (FILE *fp = fopen(fname, "w"); fp && (fputs("index\tn\tticks\tstack\theap\n", fp), 1); fclose(fp), fp = NULL) \
 		for (int i = 1, n = start_size; n <= end_size; incr, i++)
 
 #define PRINT_MEASURE(...) \
-	fprintf(fp, "%d\t%d\t%ld\t%ld\n", i, n, measure_end_##__VA_ARGS__ - measure_st_##__VA_ARGS__, BENCH_STACK_HIGH - BENCH_STACK_LOW);
+	fprintf(fp, "%d\t%d\t%ld\t%ld\t%ld\n", i, n, measure_time_##__VA_ARGS__, BENCH_STACK_HIGH - BENCH_STACK_LOW, BENCH_HEAP_TOTAL);
 
 #else
 #define BENCH(start_size, end_size, incr) \
-	printf("index\tn\tticks\tstack\n");   \
+	printf("index\tn\tticks\tstack\theap\n");   \
 	for (int i = 1, n = start_size; n <= end_size; incr, i++)
 
 #define PRINT_MEASURE(...) \
-	printf("%d\t%d\t%ld\t%ld\n", i, n, measure_time_##__VA_ARGS__, BENCH_STACK_HIGH - BENCH_STACK_LOW);
+	printf("%d\t%d\t%ld\t%ld\t%ld\n", i, n, measure_time_##__VA_ARGS__, BENCH_STACK_HIGH - BENCH_STACK_LOW, BENCH_HEAP_TOTAL);
 #endif
 
+// -------------------------------- IMPLEMENTATION --------------------------------
 #ifdef RTBENCH_IMPLEMENTATION
 
 void printArr(int *arr, int length)
@@ -80,7 +93,34 @@ void genRandSortedArr(int *arr, int length, int growth)
 	}
 }
 
+void *bmalloc(size_t size)
+{
+	size_t *ptr = malloc(size + sizeof(size_t));
+	if (!ptr)
+	{
+		return NULL;
+	}
+
+	*ptr = size;
+	BENCH_HEAP_TOTAL += size;
+	BENCH_HEAP_CURRENT += size;
+	return ptr + 1;
+}
+
+void bfree(void *ptr)
+{
+	if (!ptr)
+	{
+		return;
+	}
+
+	size_t *alloc_size = (size_t *)ptr - 1;
+	BENCH_HEAP_CURRENT -= *alloc_size;
+	free(alloc_size);
+}
+
 size_t BENCH_STACK_LOW, BENCH_STACK_HIGH;
+size_t BENCH_HEAP_TOTAL, BENCH_HEAP_CURRENT;
 
 #endif
 

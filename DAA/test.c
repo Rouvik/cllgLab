@@ -24,8 +24,14 @@ int main()
 			out = fact(n);
 		}
 
-		BENCH_STACK_PROBE();
+		BENCH_STACK_RST();
+		BENCH_HEAP_RST();
 		out = factm(n);
+
+		if (IS_HEAP_LEAKY)
+		{
+			fputs("Error heap is leaky\n", stderr);
+		}
 
 		PRINT_MEASURE();
 	}
