@@ -1,3 +1,5 @@
+.PHONY: all mkdirs sbin rsbin clean
+
 # make sure we use iverilog as Verilog compiler
 CC := iverilog
 
