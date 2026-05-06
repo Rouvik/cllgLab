@@ -62,7 +62,7 @@ int main(int argc, const char *argv[])
 
 		MEASURE_T(100)
 		{
-			BENCH_STACK_PROBE();
+			BENCH_STACK_RST();
 			msort(arr, n, dest);
 		}
 

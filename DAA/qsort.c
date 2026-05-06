@@ -60,7 +60,7 @@ int main()
 
 		MEASURE_T(100)
 		{
-			BENCH_STACK_PROBE();
+			BENCH_STACK_RST();
 			rqsort(arr, 0, n);
 		}
 

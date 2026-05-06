@@ -63,7 +63,7 @@ int main()
 
 		int index;
 
-		BENCH_STACK_PROBE();
+		BENCH_STACK_RST();
 		MEASURE_T(200, x)
 		{
 			// sort(arr, n);
