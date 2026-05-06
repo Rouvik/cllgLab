@@ -10,7 +10,7 @@ void printArr(int *arr, int n)
 	}
 }
 
-void coinChange(int *CHANGE, int *change, int n, int amount)
+int coinChange(int *CHANGE, int *change, int n, int amount)
 {
 	for(int i = 0; i < n; i++)
 	{
@@ -18,7 +18,9 @@ void coinChange(int *CHANGE, int *change, int n, int amount)
 		amount %= CHANGE[i];
 	}
 
-	if(amount > 0) printf("Error failed to solve\n");
+	if(amount > 0)
+		return 1;
+	return 0;
 }
 
 void bsort(int *arr, int n)
@@ -58,7 +60,12 @@ int main()
 
 		if(amount <= 0) return 0;
 
-		coinChange(CHANGE, arr, n, amount);
+		if(coinChange(CHANGE, arr, n, amount))
+		{
+			printf("Error failed to solve\n");
+			continue;
+		}
+
 		printf("Change:\n");
 		printArr(CHANGE, n);
 		printf("\nCoins:\n");

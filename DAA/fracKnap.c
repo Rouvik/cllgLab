@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 void swap(int *a, int *b)
 {
@@ -7,8 +8,10 @@ void swap(int *a, int *b)
 	*b = t;
 }
 
-int knap(int *price, int *size, int n, int knapSize)
+float knap(int *price, int *size, float *fractions, int n, int knapSize)
 {
+	memset(fractions, 0, sizeof(float) * n);
+
 	float totalPrice = 0;
 	int leftSize = knapSize;
 	float pps[n];
@@ -35,7 +38,9 @@ int knap(int *price, int *size, int n, int knapSize)
 
 	for(int i = 0; i < n && leftSize > 0; i++)
 	{
-		totalPrice += price[i] * (leftSize >= size[i] ? 1.0 : (float) leftSize / size[i]);
+		float fracn = (leftSize >= size[i] ? 1.0 : (float) leftSize / size[i]);
+		fractions[i] = fracn;
+		totalPrice += price[i] * fracn;
 		leftSize -= size[i];
 	}
 
@@ -44,10 +49,32 @@ int knap(int *price, int *size, int n, int knapSize)
 
 int main()
 {
-	int knapSize = 50;
-	int size[5] = {10, 13, 7, 5, 2};
-	int price[5] = {30, 50, 20, 90, 10};
+	int n, ks;
+	printf("Enter number of choices and knapsack size: ");
+	scanf("%d %d", &n, &ks);
 
-	printf("Total: %d\n", knap(price, size, 5, knapSize));
+	int price[n], size[n];
+	float fraction[n];
+
+	printf("Enter %d prices: ", n);
+	for(int i = 0; i < n; i++)
+	{
+		scanf("%d", &price[i]);
+	}
+
+	printf("Enter %d sizes: ", n);
+	for(int i = 0; i < n; i++)
+	{
+		scanf("%d", &size[i]);
+	}
+
+	float totalPrice = knap(price, size, fraction, n, ks);
+	printf("Fractions: ");
+	for(int i = 0; i < n; i++)
+	{
+		printf("%f ", fraction[i]);
+	}
+
+	printf("\nTotal: %f\n", totalPrice);
 	return 0;
 }
