@@ -6,7 +6,7 @@ BUILD := ./bin
 TARGETS := $(wildcard *.c)
 OUTPUTS := $(patsubst %.c, $(BUILD)/%, $(TARGETS))
 
-FLAGS := -Wall -O0
+FLAGS := -Wall
 
 all: $(OUTPUTS)
 
