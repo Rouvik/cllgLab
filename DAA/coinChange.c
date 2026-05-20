@@ -1,6 +1,5 @@
 #include <stdio.h>
-
-#define ARRSIZE(arr) (sizeof(arr) / sizeof(arr[0]))
+#include <stdlib.h>
 
 void printArr(int *arr, int n)
 {
@@ -23,20 +22,9 @@ int coinChange(int *CHANGE, int *change, int n, int amount)
 	return 0;
 }
 
-void bsort(int *arr, int n)
+int compare(const void *a, const void *b)
 {
-	for(int i = 0; i < n - 1; i++)
-	{
-		for(int j = 0; j < n - i - 1; j++)
-		{
-			if(arr[j] < arr[j + 1])
-			{
-				int t = arr[j];
-				arr[j] = arr[j + 1];
-				arr[j + 1] = t;
-			}
-		}
-	}
+	return *(int *)b - *(int *)a;
 }
 
 int main()
@@ -49,7 +37,7 @@ int main()
 	printf("Enter %d elems: ", n);
 	for(int i = 0; i < n; i++) scanf("%d", &CHANGE[i]);
 
-	bsort(CHANGE, n);
+	qsort(CHANGE, n, sizeof(int), compare);
 
 	int arr[n];
 	int amount;
