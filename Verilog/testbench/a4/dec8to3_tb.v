@@ -8,6 +8,8 @@ module dec8to4_tb;
 	dec3to8 d1(I[2], I[1], I[0], out, en);
 
 	initial begin
+		$dumpfile("./wave.vcd");
+		$dumpvars(1, d1);
 		$display("I\ten\tout");
 		$monitor("%d\t%b\t%b", I, en, out);
 		
@@ -17,5 +19,6 @@ module dec8to4_tb;
 		for(I = 0; I != 7; I = I + 1) begin
 			#10;
 		end
+		#10;
 	end
 endmodule

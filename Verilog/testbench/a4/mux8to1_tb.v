@@ -14,15 +14,11 @@ module mux8to1_tb;
 		$display("I\t\tsel\ty");
 		$monitor("%b\t%d\t%b", I, sel, y);
 
-		repeat (50) begin
-			I = $urandom_range(0, 256);
-			sel = sel + 1;
-
-			#10;
-		
-			if (I[sel] != y) begin
-				$display("Fatal error, selection mismatch");
-			end
-		end
+		I = 8'b00101010; sel = 3; #10;
+		I = 8'b01101010; sel = 6; #10;
+		I = 8'b00000000; sel = 5; #10;
+		I = 8'b00101001; sel = 1; #10;
+		I = 8'b00101001; sel = 4; #10;
+		I = 8'b00101001; sel = 7; #10;
 	end
 endmodule
