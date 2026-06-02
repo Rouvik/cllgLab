@@ -7,6 +7,8 @@ module magComp_tb;
     magComp m1(A, B, gt, lt, eq);
 
     initial begin
+        $dumpfile("./wave.vcd");
+        $dumpvars(1, m1);
         $display("A\tB\tgt\tlt\teq");
         $monitor("%d\t%d\t%b\t%b\t%b", A, B, gt, lt, eq);
 
