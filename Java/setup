@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+
+alias jr="java -cp ./bin"
