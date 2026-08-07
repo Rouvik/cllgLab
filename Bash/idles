@@ -1,0 +1,4 @@
+IFS='\n'
+for i in $(w); do
+	echo $i
+done
