@@ -1,4 +1,16 @@
-IFS='\n'
-for i in $(w); do
-	echo $i
-done
+#!/usr/bin/bash
+
+if [ 2 -eq 1 ]; then
+
+	while read -r i; do
+
+	# squeeze the double spaces and get 5th column which is idle time
+		idle_time=$(echo "$i" | tr -s ' ' | cut -d' ' -f5)
+
+	# 1786559700 is date -d '00:05' +%s to compare times
+		[ $(date -d "$idle_time" +%s) -gt 1786559700 ] && echo $i
+	done
+
+else
+	while read -r i; do it=$(echo "$i" | tr -s ' ' | cut -d' ' -f5); [ $(date -d "$it" +%s) -gt 1786559700 ] && echo $i; done
+fi
