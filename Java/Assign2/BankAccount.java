@@ -72,7 +72,7 @@ public class BankAccount {
 
 		while (running) {
 			System.out
-					.println("Enter choice:\n1) Deposit\n2) Withdraw\n3) Account info\n4) Check balance\n5) Exit\n> ");
+					.print("Enter choice:\n1) Deposit\n2) Withdraw\n3) Account info\n4) Check balance\n5) Exit\n> ");
 			int ch = sc.nextInt();
 
 			switch (ch) {

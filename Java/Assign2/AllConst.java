@@ -29,8 +29,8 @@ class Box
 	Box(Box b)
 	{
 		System.out.println("Copy constructor called");
-		this.w = b.w;
-		this.h = b.h;
-		this.d = b.d;
+		w = b.w;
+		h = b.h;
+		d = b.d;
 	}
 }
