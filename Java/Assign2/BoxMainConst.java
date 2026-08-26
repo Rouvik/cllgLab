@@ -3,14 +3,27 @@ import java.util.Scanner;
 class Box {
 	int w, h, d;
 
-	Box(int w, int h, int d)
-	{
-		this.w = w;
-		this.h = h;
-		this.d = d;
+	Box() {
+		w = 0;
+		h = 0;
+		d = 0;
+	};
+
+	Box(int _w, int _h, int _d) {
+		w = _w;
+		h = _h;
+		d = _d;
 	}
 
-	int volume() { return w * h * d; }
+	void setData(int _w, int _h, int _d) {
+		w = _w;
+		h = _h;
+		d = _d;
+	}
+
+	int volume() {
+		return w * h * d;
+	}
 }
 
 public class BoxMainConst {
@@ -20,12 +33,13 @@ public class BoxMainConst {
 		System.out.print("Enter dimentions of rect: ");
 		Box rect = new Box(sc.nextInt(), sc.nextInt(), sc.nextInt());
 
-		System.out.print("Enter dimentions of sq: ");
-		Box sq = new Box(sc.nextInt(), sc.nextInt(), sc.nextInt());
+		Box sq = new Box();
+		System.out.print("Enter side of sq: ");
+		int s = sc.nextInt();
+		sq.setData(s, s, s);
 
 		System.out.println(
-			(rect.volume() > sq.volume() ? "Rect" : "Square") +
-			" box is larger"
-		);
+				(rect.volume() > sq.volume() ? "Rect" : "Square") +
+						" box is larger");
 	}
 }
