@@ -4,9 +4,7 @@ class Box {
 	int w, h, d;
 
 	Box() {
-		w = 0;
-		h = 0;
-		d = 0;
+		w = h = d = 0;
 	};
 
 	Box(int _w, int _h, int _d) {
